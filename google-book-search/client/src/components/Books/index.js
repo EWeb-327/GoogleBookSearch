@@ -16,6 +16,16 @@ export function BookListItem(props) {
       <Container>
         <Row>
           <Col size="xs-4 sm-2">
+            <button 
+            type="button"
+            data-id={props.id} 
+            data-title={props.title}
+            data-authors={props.authors}
+            data-description={props.description}
+            data-thumbnail={props.thumbnail}
+            data-href={props.href}
+            onClick={props.handleSaved} 
+            className="btn btn-info">Save</button>
             <Thumbnail src={props.thumbnail} />
           </Col>
           <Col size="xs-8 sm-9">

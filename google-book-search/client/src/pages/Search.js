@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
 import API from '../utils/API';
 import { BookList, BookListItem } from '../components/Books';
-import jsxToString from 'jsx-to-string';
 
 const Search = () => {
     const [searchType, setSearchType] = useState('');
     const [searchInput, setSearchInput] = useState('');
     const [results, setResults] = useState([]);
+    const [selectedBook, setSelectedBook] = useState({
+        id: '',
+        title: '',
+        authors: [],
+        description: '',
+        thumbnail: '',
+        href: ''
+    });
+    let { id, title, authors, description, thumbnail, href } = selectedBook;
 
     const getBooks = (type, input) => {
         API.getBooks(type, input)
@@ -29,6 +37,28 @@ const Search = () => {
     const handleSearch = (event) => {
         event.preventDefault();
         getBooks(searchType, searchInput);
+    };
+     
+    const handleSaved = (event) => {
+        id = event.target.getAttribute('data-id')
+        title = event.target.getAttribute('data-title')
+        authors = event.target.getAttribute('data-authors')
+        description = event.target.getAttribute('data-description')
+        thumbnail = event.target.getAttribute('data-thumbnail')
+        href = event.target.getAttribute('data-href')
+
+        setSelectedBook({
+            id,
+            title,
+            authors,
+            description,
+            thumbnail,
+            href
+        });
+
+        API.saveBook(selectedBook)
+          .then(res => console.log(res.json))
+          .catch(err => console.log(err));
     };
 
     return (
@@ -76,6 +106,7 @@ const Search = () => {
                     href={result.volumeInfo.infoLink}
                     key={result.id}
                     id={result.id}
+                    handleSaved={handleSaved}
                     />
                 ))}
             </BookList>
