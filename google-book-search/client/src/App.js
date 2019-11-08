@@ -8,13 +8,13 @@ import NoMatch from './pages/NoMatch'
 const App = () => {
     return (
         <Router>
-          <Nav />
           <>
+            <Nav />
             <Switch>
             <Route exact path="/" component={Search} />
             <Route exact path="/search" component={Search} />
             <Route exact path="/saved" component={Saved} />
-            <Route path="*" component={NoMatch} />
+            <Route component={NoMatch} />
             </Switch>
           </>
         </Router>

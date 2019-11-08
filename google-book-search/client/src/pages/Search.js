@@ -6,15 +6,7 @@ const Search = () => {
     const [searchType, setSearchType] = useState('');
     const [searchInput, setSearchInput] = useState('');
     const [results, setResults] = useState([]);
-    const [selectedBook, setSelectedBook] = useState({
-        id: '',
-        title: '',
-        authors: [],
-        description: '',
-        thumbnail: '',
-        href: ''
-    });
-    let { id, title, authors, description, thumbnail, href } = selectedBook;
+
 
     const getBooks = (type, input) => {
         API.getBooks(type, input)
@@ -38,28 +30,25 @@ const Search = () => {
         event.preventDefault();
         getBooks(searchType, searchInput);
     };
-     
+    
     const handleSaved = (event) => {
-        id = event.target.getAttribute('data-id')
-        title = event.target.getAttribute('data-title')
-        authors = event.target.getAttribute('data-authors')
-        description = event.target.getAttribute('data-description')
-        thumbnail = event.target.getAttribute('data-thumbnail')
-        href = event.target.getAttribute('data-href')
+        event.preventDefault();
+        console.log(typeof event.target.getAttribute('data-authors'))
+        const bookData = ({
+            id: event.target.getAttribute('data-id'),
+            title: event.target.getAttribute('data-title'),
+            authors: event.target.getAttribute('data-authors'),
+            description: event.target.getAttribute('data-description'),
+            thumbnail: event.target.getAttribute('data-thumbnail'),
+            href: event.target.getAttribute('data-href')
+        })
+        console.log(bookData)
 
-        setSelectedBook({
-            id,
-            title,
-            authors,
-            description,
-            thumbnail,
-            href
-        });
-
-        API.saveBook(selectedBook)
-          .then(res => console.log(res.json))
-          .catch(err => console.log(err));
+       API.saveBook(bookData)
+        .then(res => console.log(res.json))
+          .catch(err => console.log(err));;
     };
+
 
     return (
         <>

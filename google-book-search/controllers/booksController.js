@@ -3,7 +3,7 @@ const db = require('../models');
 module.exports = {
     findAll: function(req, res) {
         db.Book
-          .find(req.query)
+          .find()
           .then(dbModel => res.json(dbModel))
           .catch(err => res.status(422).json(err));
     },
@@ -15,7 +15,14 @@ module.exports = {
     },
     create: function(req,res) {
         db.Book
-          .create(req.body)
+          .create({
+            id: req.body.id.Book,
+            title: req.body.title,
+            authors: req.body.authors,
+            description: req.body.description,
+            thumbnail: req.body.thumbnail,
+            href: req.body.href
+          })
           .then(dbModel => res.json(dbModel))
           .catch(err => res.status(422).json(err));
     },
