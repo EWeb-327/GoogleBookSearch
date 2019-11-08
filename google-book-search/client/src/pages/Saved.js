@@ -24,15 +24,17 @@ class Saved extends Component {
 
     deleteBook = id => {
         API.deleteBook(id)
-          .then(res => this.loadBooks)
+          .then(res => this.loadBooks())
           .catch(err => console.log(err))
+
+      
     }
 
     render() {
         return(
         <Row>
         <Container fluid>
-        <Col size="md-6 sm-12">
+        <Col size="md-12">
             <Jumbotron>
               <h1>Books On My List</h1>
             </Jumbotron>
@@ -40,12 +42,12 @@ class Saved extends Component {
               <List>
                 {this.state.books.map(book => (
                   <ListItem key={book.id}>
-                    <Link to={"/books/" + book.id}>
+                    <Link to={"/books/" + book._id}>
                       <strong>
                         {book.title} by {book.authors}
                       </strong>
                     </Link>
-                    <DeleteBtn onClick={() => this.deleteBook(book.id)} />
+                    <DeleteBtn onClick={() => this.deleteBook(book._id)} />
                   </ListItem>
                 ))}
               </List>

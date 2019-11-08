@@ -1,25 +1,23 @@
 import React, { useState } from 'react';
 import API from '../utils/API';
 import { BookList, BookListItem } from '../components/Books';
+import { Col, Row, Container} from '../components/Grid';
+import { Input } from '../components/Form';
+
+
 
 const Search = () => {
-    const [searchType, setSearchType] = useState('');
     const [searchInput, setSearchInput] = useState('');
     const [results, setResults] = useState([]);
 
 
-    const getBooks = (type, input) => {
-        API.getBooks(type, input)
+    const getBooks = (input) => {
+        API.getBooks(input)
         .then((res) => {
             setResults(res.data.items);
-            setSearchType('');
             setSearchInput('');
         })
         .catch((err) => console.log(err));
-    };
-
-    const handleType = (event) => {
-        setSearchType(event.target.value);
     };
 
     const handleInput = (event) => {
@@ -28,9 +26,9 @@ const Search = () => {
     
     const handleSearch = (event) => {
         event.preventDefault();
-        getBooks(searchType, searchInput);
+        getBooks(searchInput);
     };
-    
+
     const handleSaved = (event) => {
         event.preventDefault();
         console.log(typeof event.target.getAttribute('data-authors'))
@@ -45,31 +43,20 @@ const Search = () => {
         console.log(bookData)
 
        API.saveBook(bookData)
-        .then(res => console.log(res.json))
-          .catch(err => console.log(err));;
+        .then(res => res.json)
+        .catch(err => console.log(err));;
     };
 
 
     return (
         <>
+        <Container fluid>
+        <Row>
+        <Col size='md-12'>
         <h2>Search</h2>
         <form>
-            <label htmlFor="search-type">Choose Search Type:</label>
-            <input 
-            list='types'
-            type='text'
-            id='search-type'
-            name='searchType'
-            className='form-control'
-            placeholder='Choose to Search by Title or Author'
-            onChange={handleType}
-            value={searchType}
-            />
-            <datalist id="types">
-                <option  name='searchType' data-type='title' value='Title'></option>
-                <option  name='searchType' data-type='author' value='Author'></option>
-            </datalist>
-            <input 
+            <label htmlFor='search-type'>Search by Author or Title:</label>
+            <Input 
             type='text'
             value={searchInput}
             name='searchInput'
@@ -78,6 +65,9 @@ const Search = () => {
             />
             <button type='submit' onClick={handleSearch} className='btn btn-success'>Search</button>
         </form>
+        </Col>
+        </Row>
+        <Row>
         <section>
             {results.length ? 
               (<h3>Search Results for {searchInput}:</h3>)
@@ -100,6 +90,8 @@ const Search = () => {
                 ))}
             </BookList>
         </section>
+        </Row>
+        </Container>
         </>
     )
 }
